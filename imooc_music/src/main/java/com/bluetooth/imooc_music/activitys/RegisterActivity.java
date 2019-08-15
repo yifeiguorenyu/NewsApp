@@ -25,7 +25,6 @@ public class RegisterActivity extends BaseActivity {
 
 
     public void onResiterClick(View view) {
-        Log.d("abc", "onResiterClick: 12233");
     }
 
 
