@@ -12,6 +12,7 @@ public class LoginActivity extends BaseActivity {
 
     private InputView inputPhone;
     private InputView inputPassword;
+    private static final String TAG = "LoginActivity-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class LoginActivity extends BaseActivity {
 
     //立即注册,点击事件 跳转注册页面
     public void onRegisterClick(View view) {
-        Intent intent = new Intent(this,RegisterActivity.class);
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
 
     }
@@ -38,11 +39,15 @@ public class LoginActivity extends BaseActivity {
     public void onCommitClick(View view) {
         String phone = inputPhone.getInputStr();
         String password = inputPassword.getInputStr();
-//        boolean isValidate = UserUtils.validateLogin(this, phone ,password);
-//        if(!isValidate){
-//            return;
-//        }
-        Intent intent = new Intent(this,MainActivity.class);
-        startActivity(intent);
+        boolean isValidate = UserUtils.validateLogin(this, phone, password);
+        if (!isValidate) {
+            return;
+        }
+        if (isValidate) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
+
     }
 }
