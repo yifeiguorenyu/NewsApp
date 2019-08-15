@@ -1,0 +1,1 @@
+include ':app', ':news', ':sendmessage', ':chxmanager',':rxandroidtest', ':imooc_music', ':testapplication'

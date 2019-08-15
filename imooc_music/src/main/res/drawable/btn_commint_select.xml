@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--View 高亮-->
+    <item android:drawable="@drawable/commint_btn_h" android:state_focused="true"></item>
+    <item android:drawable="@drawable/commint_btn_h" android:state_pressed="true"></item>
+
+    <item android:drawable="@drawable/commint_btn_h" android:state_selected="true"></item>
+    <!--View 默认效果的时候-->
+
+    <item android:drawable="@drawable/commint_btn_n" />
+</selector>
