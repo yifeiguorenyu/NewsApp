@@ -2,6 +2,7 @@ package com.bluetooth.imooc_music.activitys;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.bluetooth.imooc_music.R;
@@ -24,6 +25,7 @@ public class RegisterActivity extends BaseActivity {
 
 
     public void onResiterClick(View view) {
+        Log.d("abc", "onResiterClick: 12233");
     }
 
 
