@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.TextureView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.EncryptUtils;
@@ -13,6 +14,8 @@ import com.bluetooth.imooc_music.R;
 import com.bluetooth.imooc_music.activitys.LoginActivity;
 import com.bluetooth.imooc_music.helps.RealmHelp;
 import com.bluetooth.imooc_music.models.UserModel;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -51,12 +54,26 @@ public class UserUtils {
             return false;
         }
 
+        //保存用户登录标记
+        boolean isSave = SPUtils.saveUser(context, phoneNumber);
+        if(!isSave){
+            Toast.makeText(context, "系统错误,请稍候重试", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
 
         return true;
     }
 
     //退出登录
     public static void logout(Context context) {
+        //删除sp保存的用户标记
+        boolean isRemove = SPUtils.removeUser(context);
+        if(!isRemove){
+            Toast.makeText(context,"系统错误,请稍候重试",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
@@ -122,4 +139,45 @@ public class UserUtils {
         RealmHelp realmHelp = new RealmHelp();
         realmHelp.saveUser(userModel);
     }
+
+
+    /**
+     * 验证是否存在已登录用户
+     *
+     */
+    public static boolean validateUserLogin(Context context){
+        return SPUtils.isLoginUser(context);
+    }
+
+    /**
+     * 修改密码
+     *  1. 数据验证
+     *     1.原密码是否输入
+     *     2.新密码是否输入 新密码与旧密码,是否相同
+     *     3.原密码
+     *  2. 利用Realm 模型自动更新的功能
+     */
+    public static boolean changePassword(Context context,String oldPassword,String newPassword,String newpasswordConfirm){
+        if (TextUtils.isEmpty(oldPassword)){
+            Toast.makeText(context, "请输入原密码", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(TextUtils.isEmpty(newpasswordConfirm)||!newpasswordConfirm.equals(newPassword)){
+            Toast.makeText(context, "新密码不正确", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        //原密码是否正确
+        // Realm获取当前登录的用户模型
+        // 根据用户模型中保存的
+       RealmHelp realmHelp = new RealmHelp();
+        UserModel user = realmHelp.getUser();
+        if(user==null||!EncryptUtils.encryptMD5ToString(oldPassword).equals(user.getPassword())){
+            Toast.makeText(context, "原密码输入错误", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        realmHelp.changePassword(EncryptUtils.encryptMD5ToString(newPassword));
+        realmHelp.close();
+        return true;
+    }
+
 }

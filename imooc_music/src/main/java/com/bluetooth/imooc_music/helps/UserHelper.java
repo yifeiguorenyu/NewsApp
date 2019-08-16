@@ -14,7 +14,7 @@ public class UserHelper {
     private UserHelper() {
     }
 
-    public static UserHelper egtInstance() {
+    public static UserHelper getInstance() {
         if (instance == null) {
             synchronized (UserHelper.class) {
                 if (instance == null) {

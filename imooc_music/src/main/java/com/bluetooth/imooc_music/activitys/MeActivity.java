@@ -5,11 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.bluetooth.imooc_music.R;
+import com.bluetooth.imooc_music.helps.UserHelper;
 import com.bluetooth.imooc_music.utils.UserUtils;
 
 public class MeActivity extends BaseActivity {
+    private TextView mTvUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +23,9 @@ public class MeActivity extends BaseActivity {
 
     private void initView() {
         initNavBar(true,"个人中心",false);
+        mTvUser=fd(R.id.tv_user);
+        mTvUser.setText("用户名:"+ UserHelper.getInstance().getPhone());
+
     }
 
     //修改密码点击事件

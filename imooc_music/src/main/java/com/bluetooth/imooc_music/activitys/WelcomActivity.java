@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.bluetooth.imooc_music.R;
+import com.bluetooth.imooc_music.utils.UserUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,12 +24,17 @@ public class WelcomActivity extends BaseActivity {
     }
 
     private void init(){
+        final boolean isLogin =  UserUtils.validateUserLogin(WelcomActivity.this);
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 //打印当前线程为 主线程
-                toLogin();
+                if(isLogin){
+                    toMain();
+                }else {
+                    toLogin();
+                }
             }
         },3000);
     }
