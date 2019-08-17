@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.bluetooth.imooc_music.R;
 import com.bluetooth.imooc_music.activitys.LoginActivity;
 import com.bluetooth.imooc_music.helps.RealmHelp;
+import com.bluetooth.imooc_music.helps.UserHelper;
 import com.bluetooth.imooc_music.models.UserModel;
 
 import org.w3c.dom.Text;
@@ -48,7 +49,7 @@ public class UserUtils {
         RealmHelp realmHelp = new RealmHelp();
         boolean isSucess = realmHelp.validateUser(phoneNumber,
                 EncryptUtils.encryptMD5ToString(password));
-        realmHelp.close();
+
         if (!isSucess) {
             Toast.makeText(context, "您的密码输入错误", Toast.LENGTH_SHORT).show();
             return false;
@@ -60,7 +61,12 @@ public class UserUtils {
             Toast.makeText(context, "系统错误,请稍候重试", Toast.LENGTH_SHORT).show();
             return false;
         }
+        UserHelper.getInstance().setPhone(phoneNumber);
+        //保存音乐原数据
 
+
+        realmHelp.setMusicSource(context);
+        realmHelp.close();
 
         return true;
     }
@@ -73,6 +79,10 @@ public class UserUtils {
             Toast.makeText(context,"系统错误,请稍候重试",Toast.LENGTH_SHORT).show();
             return;
         }
+        //删除数据源
+        RealmHelp realmHelp = new RealmHelp();
+        realmHelp.removeMusicSource();
+        realmHelp.close();
 
         Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -179,5 +189,7 @@ public class UserUtils {
         realmHelp.close();
         return true;
     }
+
+
 
 }
